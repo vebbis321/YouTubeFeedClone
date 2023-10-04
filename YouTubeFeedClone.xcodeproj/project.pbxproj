@@ -35,6 +35,11 @@
 		0AF314E42ACDB63500BD4081 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF314DD2ACDB63500BD4081 /* UIApplication+Extensions.swift */; };
 		0AF314E62ACDB63500BD4081 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF314DF2ACDB63500BD4081 /* Array+Extensions.swift */; };
 		0AF314E82ACDBA1100BD4081 /* YouTubeFeedContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF314E72ACDBA1100BD4081 /* YouTubeFeedContentViewController.swift */; };
+		236865992ACDE710008BD8E6 /* ResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236865972ACDE710008BD8E6 /* ResponseBody.swift */; };
+		2368659A2ACDE710008BD8E6 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236865982ACDE710008BD8E6 /* Video.swift */; };
+		2368659D2ACDF040008BD8E6 /* UICollecitionView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368659C2ACDF040008BD8E6 /* UICollecitionView+Layout.swift */; };
+		236865A12ACDF054008BD8E6 /* ShortsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236865A02ACDF054008BD8E6 /* ShortsCardCell.swift */; };
+		236865A42ACDF071008BD8E6 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 236865A32ACDF071008BD8E6 /* SDWebImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +92,10 @@
 		0AF314DD2ACDB63500BD4081 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		0AF314DF2ACDB63500BD4081 /* Array+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		0AF314E72ACDBA1100BD4081 /* YouTubeFeedContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeFeedContentViewController.swift; sourceTree = "<group>"; };
+		236865972ACDE710008BD8E6 /* ResponseBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseBody.swift; sourceTree = "<group>"; };
+		236865982ACDE710008BD8E6 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		2368659C2ACDF040008BD8E6 /* UICollecitionView+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollecitionView+Layout.swift"; sourceTree = "<group>"; };
+		236865A02ACDF054008BD8E6 /* ShortsCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortsCardCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				236865A42ACDF071008BD8E6 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,9 +197,13 @@
 		0AF314AE2ACDB29400BD4081 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				0AF314C92ACDB58F00BD4081 /* DNA */,
+				2368659F2ACDF04C008BD8E6 /* Cells */,
+				2368659E2ACDF047008BD8E6 /* Components */,
+				2368659B2ACDF037008BD8E6 /* Layout */,
 				0AF314C62ACDB56B00BD4081 /* Containers */,
+				0AF314C92ACDB58F00BD4081 /* DNA */,
 				0AF314BB2ACDB2ED00BD4081 /* FullScreen */,
+				236865962ACDE709008BD8E6 /* Models */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -288,6 +302,38 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		236865962ACDE709008BD8E6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				236865972ACDE710008BD8E6 /* ResponseBody.swift */,
+				236865982ACDE710008BD8E6 /* Video.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2368659B2ACDF037008BD8E6 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2368659C2ACDF040008BD8E6 /* UICollecitionView+Layout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2368659E2ACDF047008BD8E6 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		2368659F2ACDF04C008BD8E6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				236865A02ACDF054008BD8E6 /* ShortsCardCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -304,6 +350,9 @@
 			dependencies = (
 			);
 			name = YouTubeFeedClone;
+			packageProductDependencies = (
+				236865A32ACDF071008BD8E6 /* SDWebImage */,
+			);
 			productName = YouTubeFeedClone;
 			productReference = 0AF314652ACDAE7900BD4081 /* YouTubeFeedClone.app */;
 			productType = "com.apple.product-type.application";
@@ -376,6 +425,9 @@
 				Base,
 			);
 			mainGroup = 0AF3145C2ACDAE7900BD4081;
+			packageReferences = (
+				236865A22ACDF071008BD8E6 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			productRefGroup = 0AF314662ACDAE7900BD4081 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -418,6 +470,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2368659D2ACDF040008BD8E6 /* UICollecitionView+Layout.swift in Sources */,
 				0AF314B62ACDB2D100BD4081 /* Coordinator.swift in Sources */,
 				0AF314CD2ACDB59C00BD4081 /* Colors.swift in Sources */,
 				0AF314CC2ACDB59C00BD4081 /* YouTubeCloneError.swift in Sources */,
@@ -428,6 +481,7 @@
 				0AF314BF2ACDB30700BD4081 /* YouTubeFeedViewController.swift in Sources */,
 				0AF3146B2ACDAE7900BD4081 /* SceneDelegate.swift in Sources */,
 				0AF314B52ACDB2D100BD4081 /* ApplicationCoordinator.swift in Sources */,
+				236865A12ACDF054008BD8E6 /* ShortsCardCell.swift in Sources */,
 				0AF314B92ACDB2D900BD4081 /* StateCoordinator.swift in Sources */,
 				0AF314D62ACDB60200BD4081 /* ErrorView.swift in Sources */,
 				0AF314E32ACDB63500BD4081 /* UIViewController+Extensions.swift in Sources */,
@@ -436,11 +490,13 @@
 				0AF314E12ACDB63500BD4081 /* UIView+Extensions.swift in Sources */,
 				0AF314E62ACDB63500BD4081 /* Array+Extensions.swift in Sources */,
 				0AF314E02ACDB63500BD4081 /* String+Extensions.swift in Sources */,
+				236865992ACDE710008BD8E6 /* ResponseBody.swift in Sources */,
 				0AF314C82ACDB58100BD4081 /* ContentStateViewController.swift in Sources */,
 				0AF314D72ACDB60200BD4081 /* ErrorViewController.swift in Sources */,
 				0AF314D22ACDB5F400BD4081 /* LoadingViewController.swift in Sources */,
 				0AF314BA2ACDB2D900BD4081 /* InAppCoordinator.swift in Sources */,
 				0AF314E82ACDBA1100BD4081 /* YouTubeFeedContentViewController.swift in Sources */,
+				2368659A2ACDE710008BD8E6 /* Video.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -792,6 +848,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		236865A22ACDF071008BD8E6 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		236865A32ACDF071008BD8E6 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 236865A22ACDF071008BD8E6 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0AF3145D2ACDAE7900BD4081 /* Project object */;
 }

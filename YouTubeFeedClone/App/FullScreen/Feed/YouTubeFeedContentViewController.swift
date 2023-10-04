@@ -6,12 +6,40 @@
 //
 
 import UIKit
+import SwiftUI
+
+struct YouTubeFeedContentViewModel: Equatable {
+    var videos: [Video]
+
+    var firstVideo: Video? {
+        videos.first
+    }
+
+    var shorts: [Video] {
+        videos.filter { $0.width == 1920 && $0.height == 1080 }
+    }
+
+    var feedVideos: [Video] {
+        videos.filter({ !shorts.contains($0) })
+    }
+
+    enum Item: Hashable {
+        case shorts(Video)
+        case feedVideos(Video)
+    }
+
+    var items: [Item] {
+        feedVideos.map { .feedVideos($0) } + shorts.map { .shorts($0) }
+    }
+
+}
+
+protocol YouTubeFeedContentViewControllerDelegate: AnyObject {
+    func didScrollToEnd()
+    func didTap(_ video: YouTubeFeedContentViewController.Item)
+}
 
 final class YouTubeFeedContentViewController: UIViewController {
-
-    // MARK: - Types
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, Article>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Article>
 
     // MARK: - Private Components
     private lazy var collectionView: UICollectionView = {
@@ -26,17 +54,17 @@ final class YouTubeFeedContentViewController: UIViewController {
     private var snapshot: Snapshot!
 
     // MARK: - Internal properties
-    weak var delegate: NewsContentViewControllerDelegate?
+    weak var delegate: YouTubeFeedContentViewControllerDelegate?
 
-    var snapData: [Article] {
+    var viewModel: YouTubeFeedContentViewModel {
         didSet {
             updateSnapshot()
         }
     }
 
     // MARK: - LifeCycle
-    init(snapData: [Article]) {
-        self.snapData = snapData
+    init(viewModel: YouTubeFeedContentViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -60,18 +88,25 @@ final class YouTubeFeedContentViewController: UIViewController {
 
     // MARK: - CollectionView layout
     private func createLayout() -> UICollectionViewCompositionalLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnv in
-            return .createNewsLayout()
+        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnv in
+            guard let self else { fatalError() }
+
+            let section = self.dataSource.snapshot().sectionIdentifiers[sectionIndex]
+
+            switch section {
+            case .singleFeedVideo, .feedVideo:
+                return .createVideoCellLayout()
+            case .shorts:
+                return .createShortsCellLayout()
+            }
         }
         return layout
     }
 
     // MARK: - CollectionView dataSource
     private func configureDataSource() {
+        let videoCellRegistration = UICollectionView.CellRegistration<ShortsCardCell, Video> { cell, _, model in
 
-        let articleCellRegistration = UICollectionView.CellRegistration<ArticleCardCell, Article> { cell, indexPath, model in
-            cell.configure(with: .init(article: model))
-            cell.accessibilityIdentifier = "ArticleCell"
         }
 
         let footerRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionFooter) {
@@ -82,16 +117,20 @@ final class YouTubeFeedContentViewController: UIViewController {
         }
 
         dataSource = .init(collectionView: collectionView) { collectionView, indexPath, item in
-            return collectionView.dequeueConfiguredReusableCell(
-                using: articleCellRegistration,
-                for: indexPath,
-                item: item
-            )
-        }
-
-        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
-            let footer = collectionView.dequeueConfiguredReusableSupplementary(using: footerRegistration, for: indexPath)
-            return footer
+            switch item {
+            case .shorts(let model):
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: videoCellRegistration,
+                    for: indexPath,
+                    item: model
+                )
+            case .feedVideos(let model):
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: videoCellRegistration,
+                    for: indexPath,
+                    item: model
+                )
+            }
         }
 
     }
@@ -100,8 +139,10 @@ final class YouTubeFeedContentViewController: UIViewController {
     @MainActor
     private func updateSnapshot(animated: Bool = true) {
         snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(snapData, toSection: 0)
+        snapshot.appendSections(snapData.map { $0.key })
+        for datum in snapData {
+            snapshot.appendItems(datum.values, toSection: datum.key)
+        }
 
         dataSource.apply(snapshot, animatingDifferences: animated)
     }
@@ -113,14 +154,14 @@ final class YouTubeFeedContentViewController: UIViewController {
 }
 
 // MARK: - UICollectionViewDelegate
-extension NewsContentViewController: UICollectionViewDelegate {
+extension YouTubeFeedContentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let article = dataSource.itemIdentifier(for: indexPath) else {
+        guard let item = dataSource.itemIdentifier(for: indexPath) else {
             collectionView.deselectItem(at: indexPath, animated: true)
             return
         }
 
-        delegate?.didTap(article)
+        delegate?.didTap(item)
 
         collectionView.deselectItem(at: indexPath, animated: true)
     }
@@ -133,4 +174,26 @@ extension NewsContentViewController: UICollectionViewDelegate {
             delegate?.didScrollToEnd()
         }
     }
+}
+
+extension YouTubeFeedContentViewController {
+    enum Section {
+        case singleFeedVideo
+        case shorts
+        case feedVideo
+    }
+
+    enum Item: Hashable {
+        case shorts(Video)
+        case feedVideos(Video)
+    }
+
+    struct SnapData {
+        var key: Section
+        var values: [Item]
+    }
+
+    // MARK: - Types
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
 }

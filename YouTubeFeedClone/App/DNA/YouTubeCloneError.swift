@@ -13,6 +13,7 @@ enum YouTubeCloneError: Error, LocalizedError {
     case somethingWentWrong
     case invalidUrl
     case invalidResponse(code: Int)
+    case invalidData(Error)
 
     var errorDescription: String? {
         switch self {
@@ -30,6 +31,9 @@ enum YouTubeCloneError: Error, LocalizedError {
 
         case .invalidResponse(code: let code):
             return "Failed with status code: \(code)"
+
+        case .invalidData(let err):
+            return "Invalid data: \(err)"
         }
     }
 }

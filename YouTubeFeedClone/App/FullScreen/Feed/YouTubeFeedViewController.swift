@@ -12,7 +12,7 @@ final class YouTubeFeedViewController: UIViewController {
 
     // MARK: - Private views/components
     private lazy var contentStateVC = ContentStateViewController()
-    private lazy var contentVC: YouTubeFeedContentViewController?
+    private lazy var contentVC: YouTubeFeedContentViewController? = nil
 
     // MARK: - Private properties
     private let viewModel: YouTubeFeedViewModel
@@ -39,18 +39,28 @@ final class YouTubeFeedViewController: UIViewController {
 
     // MARK: - Private methods
     private func render(_ data: [Video]) {
-        if contentStateVC.shownViewController == contentVC {
-            contentVC?.snapData = data
-        } else {
-            contentVC = YouTubeFeedContentViewController(snapData: data)
-            contentVC?.delegate = self
-            contentStateVC.transition(to: .render(contentVC!))
-        }
+//        if contentStateVC.shownViewController == contentVC {
+//            contentVC?.snapData = data
+//        } else {
+//            contentVC = YouTubeFeedContentViewController(snapData: data)
+//            contentVC?.delegate = self
+//            contentStateVC.transition(to: .render(contentVC!))
+//        }
     }
 
     private func render(_ error: YouTubeCloneError) {
         contentStateVC.transition(to: .failed(error, action: { [weak self] in
-//            self?.viewModel.perform(action: .loadFromAPI(retry: true))
+
         }))
+    }
+}
+
+extension YouTubeFeedViewController: YouTubeFeedContentViewControllerDelegate {
+    func didScrollToEnd() {
+       
+    }
+
+    func didTap(_ video: YouTubeFeedContentViewController.Item) {
+        
     }
 }
