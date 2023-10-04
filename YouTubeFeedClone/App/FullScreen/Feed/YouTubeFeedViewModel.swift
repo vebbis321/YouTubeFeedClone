@@ -10,6 +10,11 @@ import Combine
 
 final class YouTubeFeedViewModel {
 
+    private let service: APIServiceProtocol
+
+    init(service: APIServiceProtocol) {
+        self.service = service
+    }
 
 
 }

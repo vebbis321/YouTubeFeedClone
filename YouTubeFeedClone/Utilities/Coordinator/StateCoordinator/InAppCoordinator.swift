@@ -14,7 +14,7 @@ final class InAppCoordinator: StateCoordinator {
     var rootViewController: UINavigationController = .init()
 
     func start() {
-        let viewModel = YouTubeFeedViewModel()
+        let viewModel = YouTubeFeedViewModel(service: APIService())
         let vc = YouTubeFeedViewController(viewModel: viewModel)
         rootViewController.pushViewController(vc, animated: false)
     }
